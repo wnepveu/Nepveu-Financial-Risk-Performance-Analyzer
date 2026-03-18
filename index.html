@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>William Nepveu – Financial Risk & Performance Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>William Nepveu – Financial Risk & Performance Analyzer</h1>
+
+        <form id="analysisForm">
+            <div class="form-group">
+                <label for="ticker">Stock Ticker</label>
+                <input type="text" id="ticker" placeholder="e.g. AAPL" required>
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="riskFree">Risk-Free Rate (%)</label>
+                <input type="number" id="riskFree" placeholder="e.g. 4.5" step="0.01" required>
+            </div>
+
+            <button type="submit">Analyze</button>
+        </form>
+
+        <div class="results">
+            <h2>Results</h2>
+            <p>Holding Period Return: <span id="hpr">--</span></p>
+            <p>Annualized Return: <span id="annualReturn">--</span></p>
+            <p>Volatility: <span id="volatility">--</span></p>
+            <p>Beta (vs S&P 500): <span id="beta">--</span></p>
+            <p>CAPM Alpha: <span id="alpha">--</span></p>
+            <p>Sharpe Ratio: <span id="sharpe">--</span></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
