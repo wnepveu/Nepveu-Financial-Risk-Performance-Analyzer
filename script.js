@@ -1,11 +1,32 @@
-document.getElementById("analysisForm").addEventListener("submit", function(event) {
+document.getElementById("analysisForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    // Placeholder behavior (no calculations yet)
-    document.getElementById("hpr").textContent = "Calculating...";
-    document.getElementById("annualReturn").textContent = "Calculating...";
-    document.getElementById("volatility").textContent = "Calculating...";
-    document.getElementById("beta").textContent = "Calculating...";
-    document.getElementById("alpha").textContent = "Calculating...";
-    document.getElementById("sharpe").textContent = "Calculating...";
+    const ticker = document.getElementById("ticker").value.toUpperCase();
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
+
+    const apiKey = "o96BmVE3B2u1You8VJZgaMWwS5UD9NVR";
+
+    try {
+        // Fetch stock data
+        const stockResponse = await fetch(
+            `https://financialmodelingprep.com/api/v3/historical-price-full/${ticker}?apikey=${apiKey}`
+        );
+        const stockData = await stockResponse.json();
+
+        // Fetch S&P 500 data
+        const marketResponse = await fetch(
+            `https://financialmodelingprep.com/api/v3/historical-price-full/%5EGSPC?apikey=${apiKey}`
+        );
+        const marketData = await marketResponse.json();
+
+        console.log("Stock Data:", stockData);
+        console.log("Market Data (S&P 500):", marketData);
+
+        alert("Data successfully fetched! Check console.");
+
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("Error fetching data.");
+    }
 });
