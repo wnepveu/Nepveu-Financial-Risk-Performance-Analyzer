@@ -10,7 +10,7 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
     try {
 // Fetch stock data
 const response = await fetch(
-    `https://YOUR-VERCEL-URL/api/data?ticker=${ticker}`
+    https://nepveufinancialrisk.vercel.app/
 );
 
 const data = await response.json();
