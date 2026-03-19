@@ -10,13 +10,13 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
     try {
       // Fetch stock data from Stooq
 const stockResponse = await fetch(
-    `https://stooq.com/q/d/l/?s=${ticker.toLowerCase()}.us&i=d`
+    `https://api.allorigins.win/raw?url=https://stooq.com/q/d/l/?s=${ticker.toLowerCase()}.us&i=d`
 );
 const stockText = await stockResponse.text();
 
 // Fetch S&P 500 data
 const marketResponse = await fetch(
-    `https://stooq.com/q/d/l/?s=^spx&i=d`
+    `https://api.allorigins.win/raw?url=https://stooq.com/q/d/l/?s=^spx&i=d`
 );
 const marketText = await marketResponse.text();
 
