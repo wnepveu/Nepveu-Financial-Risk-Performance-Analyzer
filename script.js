@@ -9,21 +9,14 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
 
     try {
 // Fetch stock data
-const stockResponse = await fetch(
-    `https://corsproxy.io/?https://stooq.com/q/d/l/?s=${ticker.toLowerCase()}.us&i=d`
+const response = await fetch(
+    `https://YOUR-VERCEL-URL/api/data?ticker=${ticker}`
 );
-const stockText = await stockResponse.text();
 
-// Fetch S&P 500 data
-const marketResponse = await fetch(
-    `https://corsproxy.io/?https://stooq.com/q/d/l/?s=^spx&i=d`
-);
-const marketText = await marketResponse.text();
+const data = await response.json();
 
-       // Extract historical arrays
-
-let stockPrices = parseCSV(stockText);
-let marketPrices = parseCSV(marketText);
+let stockPrices = data.stock.historical;
+let marketPrices = data.market.historical;
 
 // Filter by date range
 stockPrices = stockPrices.filter(d => d.date >= startDate && d.date <= endDate);
