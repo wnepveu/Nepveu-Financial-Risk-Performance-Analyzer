@@ -8,15 +8,15 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
     const apiKey = "o96BmVE3B2u1You8VJZgaMWwS5UD9NVR";
 
     try {
-      // Fetch stock data from Stooq
+// Fetch stock data
 const stockResponse = await fetch(
-    `https://api.allorigins.win/raw?url=https://stooq.com/q/d/l/?s=${ticker.toLowerCase()}.us&i=d`
+    `https://corsproxy.io/?https://stooq.com/q/d/l/?s=${ticker.toLowerCase()}.us&i=d`
 );
 const stockText = await stockResponse.text();
 
 // Fetch S&P 500 data
 const marketResponse = await fetch(
-    `https://api.allorigins.win/raw?url=https://stooq.com/q/d/l/?s=^spx&i=d`
+    `https://corsproxy.io/?https://stooq.com/q/d/l/?s=^spx&i=d`
 );
 const marketText = await marketResponse.text();
 
