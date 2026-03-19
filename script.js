@@ -8,30 +8,23 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
     const apiKey = "o96BmVE3B2u1You8VJZgaMWwS5UD9NVR";
 
     try {
-        // Fetch stock data
-        const stockResponse = await fetch(
-            `https://financialmodelingprep.com/api/v3/historical-price-full/${ticker}?apikey=${apiKey}`
-        );
-        const stockData = await stockResponse.json();
-        console.log("Stock Data:", stockData);
+      // Fetch stock data from Stooq
+const stockResponse = await fetch(
+    `https://stooq.com/q/d/l/?s=${ticker.toLowerCase()}.us&i=d`
+);
+const stockText = await stockResponse.text();
 
-        // Fetch S&P 500 data
-        const marketResponse = await fetch(
-            `https://financialmodelingprep.com/api/v3/historical-price-full/%5EGSPC?apikey=${apiKey}`
-        );
-        const marketData = await marketResponse.json();
+// Fetch S&P 500 data
+const marketResponse = await fetch(
+    `https://stooq.com/q/d/l/?s=^spx&i=d`
+);
+const marketText = await marketResponse.text();
         console.log("Market Data:", marketData);
 
        // Extract historical arrays
-if (!stockData.historical || !marketData.historical) {
-    console.log("Stock Data:", stockData);
-    console.log("Market Data:", marketData);
-    alert("Error: Could not retrieve data. Check console.");
-    return;
-}
 
-let stockPrices = stockData.historical;
-let marketPrices = marketData.historical;
+let stockPrices = parseCSV(stockText);
+let marketPrices = parseCSV(marketText);
 
 // Filter by date range
 stockPrices = stockPrices.filter(d => d.date >= startDate && d.date <= endDate);
@@ -76,4 +69,14 @@ if (stockPrices.length === 0 || marketPrices.length === 0) {
 if (stockPrices.length === 0 || marketPrices.length === 0) {
     alert("No data available for selected date range.");
     return;
+}
+function parseCSV(data) {
+    const rows = data.split("\n").slice(1);
+    return rows.map(row => {
+        const cols = row.split(",");
+        return {
+            date: cols[0],
+            close: parseFloat(cols[4])
+        };
+    }).filter(d => d.date && !isNaN(d.close));
 }
