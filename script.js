@@ -21,8 +21,15 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
         const marketData = await marketResponse.json();
 
         // Extract historical arrays
-        let stockPrices = stockData.historical;
-        let marketPrices = marketData.historical;
+      if (!stockData.historical || !marketData.historical) {
+    console.log("Stock Data:", stockData);
+    console.log("Market Data:", marketData);
+    alert("Error: Could not retrieve data. Check console.");
+    return;
+}
+
+let stockPrices = stockData.historical;
+let marketPrices = marketData.historical;
 
         // Filter by date range
         stockPrices = stockPrices.filter(d => d.date >= startDate && d.date <= endDate);
