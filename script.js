@@ -20,13 +20,41 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
         );
         const marketData = await marketResponse.json();
 
-        console.log("Stock Data:", stockData);
-        console.log("Market Data (S&P 500):", marketData);
+        // Extract historical arrays
+        let stockPrices = stockData.historical;
+        let marketPrices = marketData.historical;
 
-        alert("Data successfully fetched! Check console.");
+        // Filter by date range
+        stockPrices = stockPrices.filter(d => d.date >= startDate && d.date <= endDate);
+        marketPrices = marketPrices.filter(d => d.date >= startDate && d.date <= endDate);
+
+        // Sort ascending (important)
+        stockPrices.sort((a, b) => new Date(a.date) - new Date(b.date));
+        marketPrices.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // Extract closing prices
+        const stockCloses = stockPrices.map(d => d.close);
+        const marketCloses = marketPrices.map(d => d.close);
+
+        // Calculate daily returns
+        function calculateReturns(prices) {
+            let returns = [];
+            for (let i = 1; i < prices.length; i++) {
+                returns.push((prices[i] / prices[i - 1]) - 1);
+            }
+            return returns;
+        }
+
+        const stockReturns = calculateReturns(stockCloses);
+        const marketReturns = calculateReturns(marketCloses);
+
+        console.log("Stock Returns:", stockReturns);
+        console.log("Market Returns:", marketReturns);
+
+        alert("Returns calculated! Check console.");
 
     } catch (error) {
-        console.error("Error fetching data:", error);
-        alert("Error fetching data.");
+        console.error("Error:", error);
+        alert("Error fetching or processing data.");
     }
 });
