@@ -22,14 +22,7 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
         const marketData = await marketResponse.json();
         console.log("Market Data:", marketData);
 
-        // Extract historical arrays
-      if (!stockData.historical || !marketData.historical) {
-    console.log("Stock Data:", stockData);
-    console.log("Market Data:", marketData);
-    alert("Error: Could not retrieve data. Check console.");
-    return;
-}
-
+       // Extract historical arrays
 if (!stockData.historical || !marketData.historical) {
     console.log("Stock Data:", stockData);
     console.log("Market Data:", marketData);
@@ -40,9 +33,15 @@ if (!stockData.historical || !marketData.historical) {
 let stockPrices = stockData.historical;
 let marketPrices = marketData.historical;
 
-        // Filter by date range
-        stockPrices = stockPrices.filter(d => d.date >= startDate && d.date <= endDate);
-        marketPrices = marketPrices.filter(d => d.date >= startDate && d.date <= endDate);
+// Filter by date range
+stockPrices = stockPrices.filter(d => d.date >= startDate && d.date <= endDate);
+marketPrices = marketPrices.filter(d => d.date >= startDate && d.date <= endDate);
+
+// Check if empty
+if (stockPrices.length === 0 || marketPrices.length === 0) {
+    alert("No data available for selected date range.");
+    return;
+}
 
         // Sort ascending (important)
         stockPrices.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -74,3 +73,7 @@ let marketPrices = marketData.historical;
         alert("Error fetching or processing data.");
     }
 });
+if (stockPrices.length === 0 || marketPrices.length === 0) {
+    alert("No data available for selected date range.");
+    return;
+}
