@@ -13,15 +13,24 @@ document.getElementById("analysisForm").addEventListener("submit", async functio
             `https://financialmodelingprep.com/api/v3/historical-price-full/${ticker}?apikey=${apiKey}`
         );
         const stockData = await stockResponse.json();
+        console.log("Stock Data:", stockData);
 
         // Fetch S&P 500 data
         const marketResponse = await fetch(
             `https://financialmodelingprep.com/api/v3/historical-price-full/%5EGSPC?apikey=${apiKey}`
         );
         const marketData = await marketResponse.json();
+        console.log("Market Data:", marketData);
 
         // Extract historical arrays
       if (!stockData.historical || !marketData.historical) {
+    console.log("Stock Data:", stockData);
+    console.log("Market Data:", marketData);
+    alert("Error: Could not retrieve data. Check console.");
+    return;
+}
+
+if (!stockData.historical || !marketData.historical) {
     console.log("Stock Data:", stockData);
     console.log("Market Data:", marketData);
     alert("Error: Could not retrieve data. Check console.");
