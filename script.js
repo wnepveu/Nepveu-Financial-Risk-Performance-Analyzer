@@ -19,7 +19,6 @@ const marketResponse = await fetch(
     `https://stooq.com/q/d/l/?s=^spx&i=d`
 );
 const marketText = await marketResponse.text();
-        console.log("Market Data:", marketData);
 
        // Extract historical arrays
 
@@ -66,10 +65,7 @@ if (stockPrices.length === 0 || marketPrices.length === 0) {
         alert("Error fetching or processing data.");
     }
 });
-if (stockPrices.length === 0 || marketPrices.length === 0) {
-    alert("No data available for selected date range.");
-    return;
-}
+
 function parseCSV(data) {
     const rows = data.split("\n").slice(1);
     return rows.map(row => {
