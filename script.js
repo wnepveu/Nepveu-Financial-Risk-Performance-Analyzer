@@ -1,32 +1,29 @@
-document.getElementById("analysisForm").addEventListener("submit", async function(event) {
+document.getElementById("analysisForm").addEventListener("submit", async function(event) { 
     event.preventDefault();
 
     const ticker = document.getElementById("ticker").value.toUpperCase();
     const startDate = document.getElementById("startDate").value;
     const endDate = document.getElementById("endDate").value;
 
-    const apiKey = "o96BmVE3B2u1You8VJZgaMWwS5UD9NVR";
-
     try {
-// Fetch stock data
-const response = await fetch(
-    https://nepveufinancialrisk.vercel.app/
-);
+        // Fetch stock & market data from your Vercel backend
+        const response = await fetch(
+            `https://nepveufinancialrisk-1m8b7g0y8-wnepveus-projects.vercel.app/api/data?ticker=${ticker}`
+        );
+        const data = await response.json();
 
-const data = await response.json();
+        let stockPrices = data.stock.historical;
+        let marketPrices = data.market.historical;
 
-let stockPrices = data.stock.historical;
-let marketPrices = data.market.historical;
+        // Filter by date range
+        stockPrices = stockPrices.filter(d => d.date >= startDate && d.date <= endDate);
+        marketPrices = marketPrices.filter(d => d.date >= startDate && d.date <= endDate);
 
-// Filter by date range
-stockPrices = stockPrices.filter(d => d.date >= startDate && d.date <= endDate);
-marketPrices = marketPrices.filter(d => d.date >= startDate && d.date <= endDate);
-
-// Check if empty
-if (stockPrices.length === 0 || marketPrices.length === 0) {
-    alert("No data available for selected date range.");
-    return;
-}
+        // Check if empty
+        if (stockPrices.length === 0 || marketPrices.length === 0) {
+            alert("No data available for selected date range.");
+            return;
+        }
 
         // Sort ascending (important)
         stockPrices.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -58,14 +55,3 @@ if (stockPrices.length === 0 || marketPrices.length === 0) {
         alert("Error fetching or processing data.");
     }
 });
-
-function parseCSV(data) {
-    const rows = data.split("\n").slice(1);
-    return rows.map(row => {
-        const cols = row.split(",");
-        return {
-            date: cols[0],
-            close: parseFloat(cols[4])
-        };
-    }).filter(d => d.date && !isNaN(d.close));
-}
